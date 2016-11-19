@@ -2,7 +2,7 @@
  * Module requirements.
  */
 
-require('should');
+var test = require('tape');
 
 var Table = require('../');
 
@@ -10,83 +10,86 @@ var Table = require('../');
  * Tests.
  */
 
-module.exports = {
-  'test table with newlines in headers': function() {
-    var table = new Table({
-        head: ['Test', "1\n2\n3"]
-      , style: {
-            'padding-left': 1
-          , 'padding-right': 1
-          , head: []
-          , border: []
-        }
-    });
+test('test table with newlines in headers', function(t) {
+  t.plan(1)
+  var table = new Table({
+      head: ['Test', "1\n2\n3"]
+    , style: {
+          'padding-left': 1
+        , 'padding-right': 1
+        , head: []
+        , border: []
+      }
+  });
 
-    var expected = [
-        '┌──────┬───┐'
-      , '│ Test │ 1 │'
-      , '│      │ 2 │'
-      , '│      │ 3 │'
-      , '└──────┴───┘'
-    ];
+  var expected = [
+      '┌──────┬───┐'
+    , '│ Test │ 1 │'
+    , '│      │ 2 │'
+    , '│      │ 3 │'
+    , '└──────┴───┘'
+  ];
 
-    table.toString().should.eql(expected.join("\n"));
-  },
+  t.equal(table.toString(),expected.join("\n"));
+})
 
-  'test column width is accurately reflected when newlines are present': function() {
-    var table = new Table({ head: ['Test\nWidth'], style: {head:[], border:[]} });
-    table.width.should.eql(9);
-  },
+test('test column width is accurately reflected when newlines are present', function(t) {
+  t.plan(1)
+  var table = new Table({ head: ['Test\nWidth'], style: {head:[], border:[]} });
+  t.equal(table.width,9);
+})
 
-  'test newlines in body cells': function() {
-    var table = new Table({style: {head:[], border:[]}});
+test('test newlines in body cells', function(t) {
+  t.plan(1)
+  var table = new Table({style: {head:[], border:[]}});
 
-    table.push(["something\nwith\nnewlines"]);
+  table.push(["something\nwith\nnewlines"]);
 
-    var expected = [
-        '┌───────────┐'
-      , '│ something │'
-      , '│ with      │'
-      , '│ newlines  │'
-      , '└───────────┘'
-    ];
+  var expected = [
+      '┌───────────┐'
+    , '│ something │'
+    , '│ with      │'
+    , '│ newlines  │'
+    , '└───────────┘'
+  ];
 
-    table.toString().should.eql(expected.join("\n"));
-  },
+  t.equal(table.toString(),expected.join("\n"));
+})
 
-  'test newlines in vertical cell header and body': function() {
-    var table = new Table({ style: {'padding-left':0, 'padding-right':0, head:[], border:[]} });
+test('test newlines in vertical cell header and body', function(t) {
+  t.plan(1)
+  var table = new Table({ style: {'padding-left':0, 'padding-right':0, head:[], border:[]} });
 
-    table.push(
-        {'v\n0.1': 'Testing\nsomething cool'}
-    );
+  table.push(
+      {'v\n0.1': 'Testing\nsomething cool'}
+  );
 
-    var expected = [
-        '┌───┬──────────────┐'
-      , '│v  │Testing       │'
-      , '│0.1│something cool│'
-      , '└───┴──────────────┘'
-    ];
+  var expected = [
+      '┌───┬──────────────┐'
+    , '│v  │Testing       │'
+    , '│0.1│something cool│'
+    , '└───┴──────────────┘'
+  ];
 
-    table.toString().should.eql(expected.join("\n"));
-  },
+  t.equal(table.toString(),expected.join("\n"));
+})
 
-  'test newlines in cross table header and body': function() {
-    var table = new Table({ head: ["", "Header\n1"], style: {'padding-left':0, 'padding-right':0, head:[], border:[]} });
+test('test newlines in cross table header and body', function(t) {
+  t.plan(1)
+  var table = new Table({ head: ["", "Header\n1"], style: {'padding-left':0, 'padding-right':0, head:[], border:[]} });
 
-    table.push({ "Header\n2": ['Testing\nsomething\ncool'] });
+  table.push({ "Header\n2": ['Testing\nsomething\ncool'] });
 
-    var expected = [
-        '┌──────┬─────────┐'
-      , '│      │Header   │'
-      , '│      │1        │'
-      , '├──────┼─────────┤'
-      , '│Header│Testing  │'
-      , '│2     │something│'
-      , '│      │cool     │'
-      , '└──────┴─────────┘'
-    ];
+  var expected = [
+      '┌──────┬─────────┐'
+    , '│      │Header   │'
+    , '│      │1        │'
+    , '├──────┼─────────┤'
+    , '│Header│Testing  │'
+    , '│2     │something│'
+    , '│      │cool     │'
+    , '└──────┴─────────┘'
+  ];
 
-    table.toString().should.eql(expected.join("\n"));
-  }
-};
+  t.equal(table.toString(),expected.join("\n"));
+})
