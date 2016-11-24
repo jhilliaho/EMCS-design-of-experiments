@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - index.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>index.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">70.12</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">297</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">100.48</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">3.14</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">&quot;use strict&quot;
+
+const wcwidth = require(&#039;./width&#039;)
+const {
+  padRight,
+  padCenter,
+  padLeft,
+  splitIntoLines,
+  splitLongWords,
+  truncateString
+} = require(&#039;./utils&#039;)
+
+const DEFAULT_HEADING_TRANSFORM = key =&gt; key.toUpperCase()
+
+const DEFAULT_DATA_TRANSFORM = (cell, column, index) =&gt; cell
+
+const DEFAULTS = Object.freeze({
+  maxWidth: Infinity,
+  minWidth: 0,
+  columnSplitter: &#039; &#039;,
+  truncate: false,
+  truncateMarker: &#039;…&#039;,
+  preserveNewLines: false,
+  paddingChr: &#039; &#039;,
+  showHeaders: true,
+  headingTransform: DEFAULT_HEADING_TRANSFORM,
+  dataTransform: DEFAULT_DATA_TRANSFORM
+})
+
+module.exports = function(items, options = {}) {
+
+  let columnConfigs = options.config || {}
+  delete options.config // remove config so doesn&#039;t appear on every column.
+
+  let maxLineWidth = options.maxLineWidth || Infinity
+  if (maxLineWidth === &#039;auto&#039;) maxLineWidth = process.stdout.columns || Infinity
+  delete options.maxLineWidth // this is a line control option, don&#039;t pass it to column
+
+  // Option defaults inheritance:
+  // options.config[columnName] =&gt; options =&gt; DEFAULTS
+  options = mixin({}, DEFAULTS, options)
+
+  options.config = options.config || Object.create(null)
+
+  options.spacing = options.spacing || &#039;\n&#039; // probably useless
+  options.preserveNewLines = !!options.preserveNewLines
+  options.showHeaders = !!options.showHeaders;
+  options.columns = options.columns || options.include // alias include/columns, prefer columns if supplied
+  let columnNames = options.columns || [] // optional user-supplied columns to include
+
+  items = toArray(items, columnNames)
+
+  // if not suppled column names, automatically determine columns from data keys
+  if (!columnNames.length) {
+    items.forEach(function(item) {
+      for (let columnName in item) {
+        if (columnNames.indexOf(columnName) === -1) columnNames.push(columnName)
+      }
+    })
+  }
+
+  // initialize column defaults (each column inherits from options.config)
+  let columns = columnNames.reduce((columns, columnName) =&gt; {
+    let column = Object.create(options)
+    columns[columnName] = mixin(column, columnConfigs[columnName])
+    return columns
+  }, Object.create(null))
+
+  // sanitize column settings
+  columnNames.forEach(columnName =&gt; {
+    let column = columns[columnName]
+    column.name = columnName
+    column.maxWidth = Math.ceil(column.maxWidth)
+    column.minWidth = Math.ceil(column.minWidth)
+    column.truncate = !!column.truncate
+    column.align = column.align || &#039;left&#039;
+  })
+
+  // sanitize data
+  items = items.map(item =&gt; {
+    let result = Object.create(null)
+    columnNames.forEach(columnName =&gt; {
+      // null/undefined -&gt; &#039;&#039;
+      result[columnName] = item[columnName] != null ? item[columnName] : &#039;&#039;
+      // toString everything
+      result[columnName] = &#039;&#039; + result[columnName]
+      if (columns[columnName].preserveNewLines) {
+        // merge non-newline whitespace chars
+        result[columnName] = result[columnName].replace(/[^\S\n]/gmi, &#039; &#039;)
+      } else {
+        // merge all whitespace chars
+        result[columnName] = result[columnName].replace(/\s/gmi, &#039; &#039;)
+      }
+    })
+    return result
+  })
+
+  // transform data cells
+  columnNames.forEach(columnName =&gt; {
+    let column = columns[columnName]
+    items = items.map((item, index) =&gt; {
+      let col = Object.create(column)
+      item[columnName] = column.dataTransform(item[columnName], col, index)
+
+      let changedKeys = Object.keys(col)
+      // disable default heading transform if we wrote to column.name
+      if (changedKeys.indexOf(&#039;name&#039;) !== -1) {
+        if (column.headingTransform !== DEFAULT_HEADING_TRANSFORM) return
+        column.headingTransform = heading =&gt; heading
+      }
+      changedKeys.forEach(key =&gt; column[key] = col[key])
+      return item
+    })
+  })
+
+  // add headers
+  let headers = {}
+  if(options.showHeaders) {
+    columnNames.forEach(columnName =&gt; {
+      let column = columns[columnName]
+
+      if(!column.showHeaders){
+        headers[columnName] = &#039;&#039;;
+        return;
+      }
+
+      headers[columnName] = column.headingTransform(column.name)
+    })
+    items.unshift(headers)
+  }
+  // get actual max-width between min &amp; max
+  // based on length of data in columns
+  columnNames.forEach(columnName =&gt; {
+    let column = columns[columnName]
+    column.width = items
+    .map(item =&gt; item[columnName])
+    .reduce((min, cur) =&gt; {
+      // if already at maxWidth don&#039;t bother testing
+      if (min &gt;= column.maxWidth) return min
+      return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, wcwidth(cur))))
+    }, 0)
+  })
+
+  // split long words so they can break onto multiple lines
+  columnNames.forEach(columnName =&gt; {
+    let column = columns[columnName]
+    items = items.map(item =&gt; {
+      item[columnName] = splitLongWords(item[columnName], column.width, column.truncateMarker)
+      return item
+    })
+  })
+
+  // wrap long lines. each item is now an array of lines.
+  columnNames.forEach(columnName =&gt; {
+    let column = columns[columnName]
+    items = items.map((item, index) =&gt; {
+      let cell = item[columnName]
+      item[columnName] = splitIntoLines(cell, column.width)
+
+      // if truncating required, only include first line + add truncation char
+      if (column.truncate &amp;&amp; item[columnName].length &gt; 1) {
+        item[columnName] = splitIntoLines(cell, column.width - wcwidth(column.truncateMarker))
+        let firstLine = item[columnName][0]
+        if (!endsWith(firstLine, column.truncateMarker)) item[columnName][0] += column.truncateMarker
+        item[columnName] = item[columnName].slice(0, 1)
+      }
+      return item
+    })
+  })
+
+  // recalculate column widths from truncated output/lines
+  columnNames.forEach(columnName =&gt; {
+    let column = columns[columnName]
+    column.width = items.map(item =&gt; {
+      return item[columnName].reduce((min, cur) =&gt; {
+        if (min &gt;= column.maxWidth) return min
+        return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, wcwidth(cur))))
+      }, 0)
+    }).reduce((min, cur) =&gt; {
+      if (min &gt;= column.maxWidth) return min
+      return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur)))
+    }, 0)
+  })
+
+
+  let rows = createRows(items, columns, columnNames, options.paddingChr) // merge lines into rows
+  // conceive output
+  return rows.reduce((output, row) =&gt; {
+    return output.concat(row.reduce((rowOut, line) =&gt; {
+      return rowOut.concat(line.join(options.columnSplitter))
+    }, []))
+  }, [])
+  .map(line =&gt; truncateString(line, maxLineWidth))
+  .join(options.spacing)
+}
+
+/**
+ * Convert wrapped lines into rows with padded values.
+ *
+ * @param Array items data to process
+ * @param Array columns column width settings for wrapping
+ * @param Array columnNames column ordering
+ * @return Array items wrapped in arrays, corresponding to lines
+ */
+
+function createRows(items, columns, columnNames, paddingChr) {
+  return items.map(item =&gt; {
+    let row = []
+    let numLines = 0
+    columnNames.forEach(columnName =&gt; {
+      numLines = Math.max(numLines, item[columnName].length)
+    })
+    // combine matching lines of each rows
+    for (let i = 0; i &lt; numLines; i++) {
+      row[i] = row[i] || []
+      columnNames.forEach(columnName =&gt; {
+        let column = columns[columnName]
+        let val = item[columnName][i] || &#039;&#039; // || &#039;&#039; ensures empty columns get padded
+        if (column.align === &#039;right&#039;) row[i].push(padLeft(val, column.width, paddingChr))
+        else if (column.align === &#039;center&#039; || column.align === &#039;centre&#039;) row[i].push(padCenter(val, column.width, paddingChr))
+        else row[i].push(padRight(val, column.width, paddingChr))
+      })
+    }
+    return row
+  })
+}
+
+/**
+ * Object.assign
+ *
+ * @return Object Object with properties mixed in.
+ */
+
+function mixin(...args) {
+  if (Object.assign) return Object.assign(...args)
+  return ObjectAssign(...args)
+}
+
+function ObjectAssign(target, firstSource) {
+  &quot;use strict&quot;;
+  if (target === undefined || target === null)
+    throw new TypeError(&quot;Cannot convert first argument to object&quot;);
+
+  var to = Object(target);
+
+  var hasPendingException = false;
+  var pendingException;
+
+  for (var i = 1; i &lt; arguments.length; i++) {
+    var nextSource = arguments[i];
+    if (nextSource === undefined || nextSource === null)
+      continue;
+
+    var keysArray = Object.keys(Object(nextSource));
+    for (var nextIndex = 0, len = keysArray.length; nextIndex &lt; len; nextIndex++) {
+      var nextKey = keysArray[nextIndex];
+      try {
+        var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+        if (desc !== undefined &amp;&amp; desc.enumerable)
+          to[nextKey] = nextSource[nextKey];
+      } catch (e) {
+        if (!hasPendingException) {
+          hasPendingException = true;
+          pendingException = e;
+        }
+      }
+    }
+
+    if (hasPendingException)
+      throw pendingException;
+  }
+  return to;
+}
+
+/**
+ * Adapted from String.prototype.endsWith polyfill.
+ */
+
+function endsWith(target, searchString, position) {
+  position = position || target.length;
+  position = position - searchString.length;
+  let lastIndex = target.lastIndexOf(searchString);
+  return lastIndex !== -1 &amp;&amp; lastIndex === position;
+}
+
+
+function toArray(items, columnNames) {
+  if (Array.isArray(items)) return items
+  let rows = []
+  for (let key in items) {
+    let item = {}
+    item[columnNames[0] || &#039;key&#039;] = key
+    item[columnNames[1] || &#039;value&#039;] = items[key]
+    rows.push(item)
+  }
+  return rows
+}</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

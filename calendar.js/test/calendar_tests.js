@@ -39,12 +39,36 @@ test('monthDates, Monday', function() {
     var calMon = new Calendar(1); // calendar with Monday as first day of the week
     var mdc_jan_2012 = calMon.monthDates(2012,0);
     var mdc_feb_2012 = calMon.monthDates(2012,1);
+
     equal(mdc_jan_2012.length, 6, 'January 2012 spans 6 calendar weeks');
     equal(mdc_feb_2012.length, 5, 'February 2012 spans 5 calendar weeks');
     deepEqual(mdc_jan_2012[0][0], new Date(2011,11,26), 'first Monday is Dec. 26th. = '+mdc_jan_2012[0][0]);
     deepEqual(mdc_jan_2012[1][0], new Date(2012,0,2), 'second Monday is Jan. 2nd.');
     deepEqual(mdc_jan_2012[mdc_jan_2012.length-1][6], new Date(2012,1,5), 'last Sunday Feb. 5th.');
     deepEqual(mdc_feb_2012[mdc_feb_2012.length-1][6], new Date(2012,2,4), 'last Sunday Mar. 4th. ='+mdc_feb_2012[4][6]);
+});
+test('monthDates Exception',function(){
+    var calMon = new Calendar(1);
+    raises(function(){
+        calMon.monthDates(1969,0)
+    },'CalendarException: year must be a number >= 1970')
+
+    raises(function(){
+        calMon.monthDates("2012",0)
+    },'CalendarException: year must be a number >= 1970')
+
+    var calMon = new Calendar(1);
+    raises(function(){
+        calMon.monthDates(2012,12)
+    },'CalendarException: month must be a number (Jan is 0)')
+
+    raises(function(){
+        calMon.monthDates(2012,-1)
+    },'CalendarEception: month must be a number (Jan is 0)')
+
+    raises(function(){
+        calMon.monthDates(2012,"0")
+    },'CalendarEception: month must be a number (Jan is 0)')
 });
 test('monthDays, Sunday', function() {
     var calSun = new Calendar(); // calendar with Sunday as first day of the week
@@ -62,4 +86,12 @@ test('monthText, Sunday', function() {
                                      "12 13 14 15 16 17 18",
                                      "19 20 21 22 23 24 25",
                                      "26 27 28 29         "].join("\n"));
+    var now = new Date()
+    var monthTextExpected = calSun.monthText(now.getFullYear(),now.getMonth());
+    equal(calSun.monthText(),monthTextExpected);
+
 });
+test('CalendarException',function(){
+    var exception = new CalendarException("test");
+    equal(exception,'CalendarException: test')
+})

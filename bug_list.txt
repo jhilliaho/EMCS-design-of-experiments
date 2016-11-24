@@ -1,46 +1,65 @@
-http://www.w3schools.com/js/js_strict.asp
-0. Remove “use strict” before adding bugs
+﻿0. Remove “use strict” before adding bugs
 
-http://tutorialzine.com/2014/04/10-mistakes-javascript-beginners-make/
-1. Missing curly braces
-	One practice, which JavaScript beginners are often guilty of, is omitting curly braces after statements like if, else, while and for. 
+===========================	
 
-2. Missing semicolons
-	When JavaScript is parsed, there is a process known as automatic semicolon insertion. However, you should always include semicolons, because there are dangers in omitting them.
+1. Missing curly braces				
+	One practice, which JavaScript beginners are often guilty of, is omitting curly braces after statements like if, else, while and for.
+	- search for if/for... with 2-3 statements and remove braces
+				
+2. Automatic semicolon insertion
+	When JavaScript is parsed, there is a process known as automatic semicolon insertion. However, you should always include semicolons, because there are dangers in omitting them.			
+	- newline or splitted statements after return
+				
+3. Not understanding type coercion				
+	JavaScript is dynamically typed. Depending on how you use a variable, the runtime might decide that it should be converted in one type or another. This is known as type coercion. 			
+	To prevent types from being implicitly converted when comparing variables in if statements, you can use strict equality checks (===).			
+	- switch statements (add "" to numbers or remove them from strings)
+	- equality check is harder as it is not always is a bug
+	------ replace === by == lowers condition and will only lead to bugs when one of the statements is used later. 5 == "5", but 5 has no string functions like length
 
-3. Not understanding type coercion
-	JavaScript is dynamically typed. Depending on how you use a variable, the runtime might decide that it should be converted in one type or another. This is known as type coercion. To prevent types from being implicitly converted when comparing variables in if statements, you can use strict equality checks (===).
+4. Confusing addition and concatenation				
+	In JavaScript both operations use the same + operator (adding a string and a number will result in concatenation)
+	- change type of one variable in one of these scenarios if possible
 
-4. Forgetting var
-	Another practice that beginners are guilty of, is forgetting to use the var keyword when declaring variables. JavaScript is very permissive, and the first time it sees that you’ve used a variable without the var statement, it will silently declare it for you globally. This can be the source of subtle bugs.
-
-5. Arithmetic operations with floats
-	This mistake is true for nearly every programming language out there, including JavaScript. Due to the way floating point numbers are represented in memory, arithmetic operations are not as precise as you’d think. To work around this problem, you should not use use decimals if you need absolute correctness.
-
-http://www.w3schools.com/js/js_mistakes.asp
+5. Arithmetic operations with floats				
+	This mistake is true for nearly every programming language out there, including JavaScript. Due to the way floating point numbers are represented in memory, arithmetic operations are not as precise as you’d think. 			
+	To work around this problem, you should not use use decimals if you need absolute correctness.
+	- probably hard to find spots...
 
 6. Use assignment operator (=) instead of comparison operator (==)
+	- search for if and while loops and assure that code runs
 
-7. Forget the difference of strict comparison (===) and comparison (==)
+7. Misplacing semicolon				
+	if (x == 19);	{    // code block }		
+	Because of of a misplaced semicolon, the code block after this will never be executed.
+	- search for if statements and loops
 
-8. Confusing addition and concatenation
-	In JavaScript both operations use the same + operator
+8. Undefined is NOT Null				
+	With JavaScript, null is for objects, undefined is for variables, properties, and methods.			
+	To be null, an object has to be defined, otherwise it will be undefined.			
+	- replace undefined by null
 
-9. Breaking a JavaScript String
-	JavaScript will allow you to break a statement into two lines, but breaking a statement in the middle of a string will not work.
+9. Missing the ‘break’ Keyword in a Switch-Case Block
+	I just noticed that is a blog about java, but also problem in js
+	- will also executed cases after
 
-10. Misplacing semicolon
-	if (x == 19);
-	{
-	    // code block  
-	}
-	Because of of a misplaced semicolon, the code block after this will always be executed.
-
-11. Undefined is NOT Null
-	With JavaScript, null is for objects, undefined is for variables, properties, and methods.
-	To be null, an object has to be defined, otherwise it will be undefined.
-
-12. Expecting a block level scope
+10. Forgetting var				
+	Another practice that beginners are guilty of, is forgetting to use the var keyword when declaring variables. JavaScript is very permissive, and the first time it sees that you’ve used a variable without the var statement,			
+	it will silently declare it for you globally. This can be the source of subtle bugs.				
+	- rarely an error, possible spot (for loop calls different code which resets counter)
+	- http://stackoverflow.com/questions/1470488/what-is-the-purpose-of-the-var-keyword-and-when-to-use-it-or-omit-it
+				
+11. Expecting a block level scope				
 	JavaScript does not create a new scope for each code block.
+	example:
+	for (var i = 0; i < 10; i++) {
+		// some code
+	}
+	return i; //undefined
 
+12. Ending Array or Object with comma	
 
+http://www.w3schools.com/js/js_strict.asp
+http://www.w3schools.com/js/js_mistakes.asp	
+http://tutorialzine.com/2014/04/10-mistakes-javascript-beginners-make/
+https://www.toptal.com/java/top-10-most-common-java-development-mistakes

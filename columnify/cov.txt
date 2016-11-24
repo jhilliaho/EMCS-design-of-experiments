@@ -1,0 +1,308 @@
+TAP version 13
+# 1 column
+ok 1 should be equal
+# 2 column
+ok 2 should be equal
+# columns can be aligned to the center
+ok 3 should be equal
+# columns can be aligned to the centre using the correct spelling of centre
+ok 4 should be equal
+# columns can be aligned right
+ok 5 should be equal
+# width calculated correctly even if ansi colors used.
+ok 6 should be equal
+# objects are automatically converted into k/v array
+ok 7 should be equal
+# column names can be provided
+ok 8 should be equal
+# column splitter character
+ok 9 should be equal
+# column data can be transformed
+ok 10 should be equal
+# dataTransform gets columns
+ok 11 has column
+ok 12 column has name
+ok 13 column has align
+ok 14 column has maxWidth
+ok 15 column has minWidth
+ok 16 column has truncate
+ok 17 has column
+ok 18 column has name
+ok 19 column has align
+ok 20 column has maxWidth
+ok 21 column has minWidth
+ok 22 column has truncate
+ok 23 has column
+ok 24 column has name
+ok 25 column has align
+ok 26 column has maxWidth
+ok 27 column has minWidth
+ok 28 column has truncate
+ok 29 has column
+ok 30 column has name
+ok 31 column has align
+ok 32 column has maxWidth
+ok 33 column has minWidth
+ok 34 column has truncate
+ok 35 has column
+ok 36 column has name
+ok 37 column has align
+ok 38 column has maxWidth
+ok 39 column has minWidth
+ok 40 column has truncate
+ok 41 has column
+ok 42 column has name
+ok 43 column has align
+ok 44 column has maxWidth
+ok 45 column has minWidth
+ok 46 column has truncate
+ok 47 has column
+ok 48 column has name
+ok 49 column has align
+ok 50 column has maxWidth
+ok 51 column has minWidth
+ok 52 column has truncate
+ok 53 has column
+ok 54 column has name
+ok 55 column has align
+ok 56 column has maxWidth
+ok 57 column has minWidth
+ok 58 column has truncate
+ok 59 has column
+ok 60 column has name
+ok 61 column has align
+ok 62 column has maxWidth
+ok 63 column has minWidth
+ok 64 column has truncate
+# column headings can be transformed
+ok 65 should be equal
+# column data can be transformed on a per-column basis
+ok 66 should be equal
+ok 67 should be equal
+ok 68 should be equal
+ok 69 Module1 name was transformed
+ok 70 Module2 name was transformed
+ok 71 Module3 name was transformed
+ok 72 Description was not transformed
+# removes description column
+ok 73 should be equivalent
+ok 74 should be truthy
+# include == columns
+ok 75 should be equivalent
+ok 76 should be truthy
+# columns preferred over include if both supplied
+ok 77 should be equivalent
+ok 78 should be truthy
+# leaving existing linebreaks
+ok 79 should be equal
+# removing existing linebreaks
+ok 80 should be equal
+# column headings are uppercased by default
+ok 81 NAME exists
+ok 82 DESCRIPTION exists
+ok 83 VERSION exists
+# headings can be transformed by a function
+ok 84 Name exists
+ok 85 Description exists
+ok 86 Version exists
+# headings can be transformed on a per-column basis
+ok 87 Name exists
+ok 88 Description exists
+ok 89 Version exists
+# hide id column
+ok 90 should be equal
+# pad string with spaces up to len (sides equal)
+ok 91 should be equal
+# pad string with spaces up to len (sides not equal)
+ok 92 should be equal
+# pad string with paddingChr of length >1, up to len
+ok 93 should be equal
+# pad string with spaces up to len
+ok 94 should be equal
+# pad empty string with spaces up to len
+ok 95 should be equal
+# leaves long strings along
+ok 96 should be equal
+# custom padding
+ok 97 should be equal
+# handling funky data with spaces up to len
+ok 98 should be equal
+ok 99 should be equal
+ok 100 should be equal
+ok 101 should be equal
+ok 102 should be equal
+# pad string with paddingChr up to len
+ok 103 should be equal
+# pad string with paddingChr of length >1, up to len
+ok 104 should be equal
+# show column
+ok 105 should be equal
+# lines under max are ok
+ok 106 should be equivalent
+# lines at max are ok
+ok 107 should be equivalent
+# lines at max with multiple spaces are ok
+ok 108 should be equivalent
+# lines over max will be split
+ok 109 should be equivalent
+# splits lines under max onto multiple lines
+ok 110 should be equivalent
+# can put multiple words per line
+ok 111 should be equivalent
+# single existing newline is preserved
+ok 112 should be equivalent
+# multiple existing newlines are preserved
+ok 113 should be equivalent
+# split long word with …
+ok 114 should be equal
+# split long words with …
+ok 115 should be equal
+# ignores short words
+ok 116 should be equal
+# can split long words multiple times
+ok 117 should be equal
+# ignores/strips leading whitespace
+ok 118 should be equal
+# multibytes characters
+ok 119 should be equal
+# columns are limited when truncation enabled
+ok 120 should be equal
+# specific columns can be truncated, while others not
+ok 121 should be equal
+# string proto does not get polluted by wcwidth
+ok 122 should be equal
+# truncate string which is longer than max
+ok 123 should be equal
+# truncate string which is shorter than max
+ok 124 should be equal
+# truncate string with multibytes characters
+ok 125 should be equal
+# return string when maxLineWidth is Infinity
+ok 126 should be equal
+# truncate funky data
+ok 127 should be equal
+ok 128 should be equal
+ok 129 should be equal
+ok 130 should be equal
+ok 131 should be equal
+# specific columns can be truncated, while others not
+ok 132 should be equal
+# when no maxLineWidth, nothing is changed
+ok 133 should be equal
+# maxLineWidth: "auto" with column max widths
+ok 134 should be equal
+# columns are limited when truncation enabled
+ok 135 should be equal
+# truncation character is configurable
+ok 136 should be equal
+# truncation character can be multichar
+ok 137 should be equal
+# wrapping wide columns
+ok 138 should be equal
+# wrapping wide columns
+ok 139 should be equal
+
+1..139
+# tests 139
+# pass  139
+
+# ok
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 114, column 68-74
+
+          if (column.headingTransform !== DEFAULT_HEADING_TRANSFORM) return;
+                                                                     ^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 248, column 3-50
+
+    return ObjectAssign.apply(undefined, arguments);
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 252, column 3-15
+
+    "use strict";
+    ^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 254, column 7-45, 7-45
+
+    if (target === undefined || target === null) throw new TypeError("Cannot convert first argument to object");
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 256, column 3-26
+
+    var to = Object(target);
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 258, column 3-34
+
+    var hasPendingException = false;
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 259, column 3-23
+
+    var pendingException;
+    ^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 261, column 16-16, 16-16, 16-16
+
+    for (var i = 1; i < arguments.length; i++) {
+                 ^  ^^^^^^^^^^^^^^^^^^^^  ^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 262, column 5-34
+
+      var nextSource = arguments[i];
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 263, column 9-55
+
+      if (nextSource === undefined || nextSource === null) continue;
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 265, column 5-52
+
+      var keysArray = Object.keys(Object(nextSource));
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 266, column 26-26, 26-26, 26-26, 26-26
+
+      for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+                           ^        ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 267, column 7-41
+
+        var nextKey = keysArray[nextIndex];
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 269, column 9-72
+
+          var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 270, column 13-49, 13-49
+
+          if (desc !== undefined && desc.enumerable) to[nextKey] = nextSource[nextKey];
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 272, column 13-32
+
+          if (!hasPendingException) {
+              ^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 273, column 11-37
+
+            hasPendingException = true;
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 274, column 11-31
+
+            pendingException = e;
+            ^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\columnify\columnify.js: line 281, column 3-12
+
+    return to;
+    ^^^^^^^^^^
+
+# coverage: 1918/1944 (98.66 %)
+
+non-zero exit code in `coverify` command

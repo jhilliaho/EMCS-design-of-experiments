@@ -1,0 +1,114 @@
+TAP version 13
+# test complete table
+ok 1 should be equal
+# test width property
+ok 2 should be equal
+# test vertical table output
+ok 3 should be equal
+# test cross table output
+ok 4 should be equal
+# test custom chars
+ok 5 should be equal
+# test compact shortand
+ok 6 should be equal
+# test compact empty mid line
+ok 7 should be equal
+# test decoration lines disabled
+ok 8 should be equal
+# test with null/undefined as values or column names
+ok 9 should be equal
+# test table with newlines in headers
+ok 10 should be equal
+# test column width is accurately reflected when newlines are present
+ok 11 should be equal
+# test newlines in body cells
+ok 12 should be equal
+# test newlines in vertical cell header and body
+ok 13 should be equal
+# test newlines in cross table header and body
+ok 14 should be equal
+
+1..14
+# tests 14
+# pass  14
+
+# ok
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 68, column 3-11
+
+    return 0;
+    ^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 86, column 42-68
+
+        , colWidths = options.colWidths || new Array(this.head.length)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 89, column 39-48
+
+      if (!head.length && !this.length) return '';
+                                        ^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 130, column 45-66
+
+      return typeof obj == 'object' && obj && obj.width != undefined
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 131, column 12-20
+
+           ? obj.width
+             ^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 132, column 55-76
+
+           : ((typeof obj == 'object' && obj !== null ? utils.strlen(obj.text) : utils.strlen(obj)) + (style['padding-left'] || 0) + (style['padding-right'] || 0))
+                                                        ^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 227, column 7-39
+
+        subject = colors[style](subject);
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 234, column 48-55, 48-55
+
+      var str = String(typeof str == 'object' && str.text ? str.text : str)
+                                                 ^^^^^^^^   ^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 245, column 20-54
+
+                    (align == 'middle' ? 'both' : 'left'))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\index.js: line 273, column 9-14
+
+          return
+          ^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\utils.js: line 24, column 9-58
+
+          str = Array(len + 1 - str.length).join(pad) + str;
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\utils.js: line 28, column 9-63
+
+          var right = Math.ceil((padlen = len - str.length) / 2);
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\utils.js: line 29, column 9-34
+
+          var left = padlen - right;
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\utils.js: line 30, column 9-75
+
+          str = Array(left + 1).join(pad) + str + Array(right + 1).join(pad);
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# C:\Users\Sebastian Rhelfedt\Desktop\EMCS-design-of-experiments\cli-table\lib\utils.js: line 62, column 36-37
+
+        defaults[p] = defaults[p] || {};
+                                     ^^
+
+# coverage: 815/831 (98.07 %)
+
+non-zero exit code in `coverify` command
