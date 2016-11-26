@@ -1,12 +1,17 @@
 #use this script to load all your data
 
-testCalendarFull <- c(1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0)
+testCalendarFull <-        c(1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0)
 testCalendarFullMinimal <- c(1,1,0,0,0,0,0,1,0,1,1,0,1,1,1,1,0,0,0,0)
 testCalendar90P <- c(1,1,0,0,0,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0)
+testCalendar90PMinimal <- c(0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0)
 testCalendar70P <- c(1,0,0,0,1,0,0,0,0,1,1,0,1,1,1,0,0,0,0,0)
+testCalendar70PMinimal <- c(1,0,0,0,0,0,0,0,0,1,1,0,1,1,1,0,0,0,0,0)
 testCalendar60P <- c(1,0,0,0,0,0,0,0,0,1,1,0,1,1,1,0,0,0,0,0)
+testCalendar60PMinimal <- c(1,0,0,0,0,0,0,0,0,1,1,0,1,1,1,0,0,0,0,0)
 testCalendar45P <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+testCalendar45PMinimal <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 testCalendar30P <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+testCalendar30PMinimal <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 
 testCalendar0C <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 testCalendar1C <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
@@ -23,4 +28,5 @@ testCalendarCases <- c(35,30,20,10,5,3,2,1,0)
 testCalendarCasesCoverages <- c(100,100,93.02,67.44,65.12,62.79,37.21,30.23,0)
 
 testCalendarCoverageDetailed <- data.frame(testCalendarFull,testCalendar90P,testCalendar70P,testCalendar60P,testCalendar45P,testCalendar30P)
+testCalendarCoverageMinimalDetailed <- data.frame(testCalendarFullMinimal,testCalendar90PMinimal,testCalendar70PMinimal,testCalendar60PMinimal,testCalendar45PMinimal,testCalendar30PMinimal)
 testCalendarCasesDetailed <- data.frame(testCalendar35C,testCalendar30C,testCalendar20C,testCalendar10C,testCalendar5C,testCalendar3C,testCalendar2C,testCalendar1C,testCalendar0C)
