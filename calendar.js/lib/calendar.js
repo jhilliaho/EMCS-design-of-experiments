@@ -60,7 +60,7 @@ Calendar.prototype = {
             var now = new Date();
             year = now.getFullYear();
             month = now.getMonth();
-        };
+        }
         var getDayOrBlank = function getDayOrBlank(date) {
             var s = date.getMonth() === month ? date.getDate().toString() : "  ";
             while (s.length < 2) s = " "+s;
