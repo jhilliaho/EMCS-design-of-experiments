@@ -1,5 +1,5 @@
 #use Pruning
-pruning = FALSE
+pruning = TRUE
 if(pruning){
   testCalendarCoverageDetailed <- testCalendarCoverageDetailed[1:16,]
   testCalendarCasesDetailed <- testCalendarCasesDetailed[1:16,]
@@ -34,7 +34,7 @@ xl <- seq(min(testCases),max(testCases), (max(testCases) - min(testCases))/10)
 lines(xl,predict(lo,xl),col='red',lwd=2)
 
 #plot bugs found of full and full minimal test suite
-plot(1:length(testCalendarFull),testCalendarFull,col="green",xlab="Bug number",ylab="Found?", type="l")
+plot(1:length(testCalendarFull),testCalendarFull,col="green",xlab="Number of injected bug",ylab="Found?", type="l",main = "Bugs found given the full or minimal/ full test suite")
 par(new=TRUE)
 plot(1:length(testCalendarFullMinimal),testCalendarFullMinimal,col="red",xlab="",ylab="", type="l")
 
