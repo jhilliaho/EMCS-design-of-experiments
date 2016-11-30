@@ -256,7 +256,8 @@ function endsWith(target, searchString, position) {
   position = position || target.length;
   position = position - searchString.length;
   var lastIndex = target.lastIndexOf(searchString);
-  return lastIndex !== -1 && lastIndex === position;
+  return
+  lastIndex !== -1 && lastIndex === position;
 }
 
 function toArray(items, columnNames) {
