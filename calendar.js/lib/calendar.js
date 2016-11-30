@@ -56,7 +56,7 @@ Calendar.prototype = {
         return this.monthDates(year, month, getDayOrZero);
     },
     monthText : function monthText(year, month) {
-        if (typeof year === "undefined") {
+        if (typeof year === "undefined" && 0) {
             var now = new Date();
             year = now.getFullYear();
             month = now.getMonth();
