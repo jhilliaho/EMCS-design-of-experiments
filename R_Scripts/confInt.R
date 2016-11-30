@@ -1,16 +1,16 @@
 attributes <- 16
 
-data <- sapply(1:ncol(testCalendarFullDetailed[1:attributes,]),function(x) sum(testCalendarFullDetailed[,x])/attributes)
-data
-shapiro.test(data)
-qqnorm(data)
-qqline(data, col = 2)
+myData <- sapply(1:ncol(testCalendarFullDetailed[1:attributes,]),function(x) sum(testCalendarFullDetailed[,x])/attributes)
+myData
+shapiro.test(myData)
+qqnorm(myData)
+qqline(myData, col = 2)
 
 
 #confidence interval according to students t-distribution
-sampleMean <- mean(data)
-s <- sd(data)
-n <- length(data)
+sampleMean <- mean(myData)
+s <- sd(myData)
+n <- length(myData)
 error <- qt(0.975,df=n-1)*s/sqrt(n)
 left <- sampleMean-error
 right <- sampleMean+error
@@ -25,7 +25,7 @@ Bmean <- function(data, indices) {
   return(mean(d))
 } 
 
-results <- boot(data, statistic=Bmean, R=1000)
+results <- boot(data = myData, statistic=Bmean, R=1000)
 results
 plot(results)
 
@@ -35,4 +35,4 @@ boot.ci(results, type=c("norm", "basic", "perc", "bca"))
 
 
 #cleanup
-#rm(data)
+rm(myData)
