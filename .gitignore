@@ -1,3 +1,6 @@
+columnify/test/*.txt
+**/.DS_Store
 **/node_modules
 columnify/test/*.txt
 **/.RHistory
+

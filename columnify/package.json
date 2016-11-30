@@ -5,7 +5,7 @@
   "main": "columnify.js",
   "scripts": {
     "pretest": "npm prune",
-    "test": "make prepublish && tape test/*.js | tap-spec",
+    "test": "istanbul cover test/all.js",
     "bench": "npm test && node bench",
     "prepublish": "make prepublish"
   },

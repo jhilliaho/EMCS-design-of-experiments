@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - stacktrace-gps.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>stacktrace-gps.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">68.15</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">303</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">48.11</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">2.51</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">(function(root, factory) {
+    &#039;use strict&#039;;
+    // Universal Module Definition (UMD) to support AMD, CommonJS/Node.js, Rhino, and browsers.
+
+    /* istanbul ignore next */
+    if (typeof define === &#039;function&#039; &amp;&amp; define.amd) {
+        define(&#039;stacktrace-gps&#039;, [&#039;source-map&#039;, &#039;stackframe&#039;], factory);
+    } else if (typeof exports === &#039;object&#039;) {
+        module.exports = factory(require(&#039;source-map/lib/source-map-consumer&#039;), require(&#039;stackframe&#039;));
+    } else {
+        root.StackTraceGPS = factory(root.SourceMap || root.sourceMap, root.StackFrame);
+    }
+}(this, function(SourceMap, StackFrame) {
+    &#039;use strict&#039;;
+
+    /**
+     * Make a X-Domain request to url and callback.
+     *
+     * @param {String} url
+     * @returns {Promise} with response text if fulfilled
+     */
+    function _xdr(url) {
+        return new Promise(function(resolve, reject) {
+            var req = new XMLHttpRequest();
+            req.open(&#039;get&#039;, url);
+            req.onerror = reject;
+            req.onreadystatechange = function onreadystatechange() {
+                if (req.readyState === 4) {
+                    if (req.status &gt;= 200 &amp;&amp; req.status &lt; 300) {
+                        resolve(req.responseText);
+                    } else {
+                        reject(new Error(&#039;HTTP status: &#039; + req.status + &#039; retrieving &#039; + url));
+                    }
+                }
+            };
+            req.send();
+        });
+
+    }
+
+    /**
+     * Convert a Base64-encoded string into its original representation.
+     * Used for inline sourcemaps.
+     *
+     * @param {String} b64str Base-64 encoded string
+     * @returns {String} original representation of the base64-encoded string.
+     */
+    function _atob(b64str) {
+        if (typeof window !== &#039;undefined&#039; &amp;&amp; window.atob) {
+            return window.atob(b64str);
+        } else {
+            throw new Error(&#039;You must supply a polyfill for window.atob in this environment&#039;);
+        }
+    }
+
+    function _parseJson(string) {
+        if (typeof JSON !== &#039;undefined&#039; &amp;&amp; JSON.parse) {
+            return JSON.parse(string);
+        } else {
+            throw new Error(&#039;You must supply a polyfill for JSON.parse in this environment&#039;);
+        }
+    }
+
+    function _findFunctionName(source, lineNumber/*, columnNumber*/) {
+        // function {name}({args}) m[1]=name m[2]=args
+        var reFunctionDeclaration = /function\s+([^(]*?)\s*\(([^)]*)\)/;
+        // {name} = function ({args}) TODO args capture
+        var reFunctionExpression = /[&#039;&quot;]?([$_A-Za-z][$_A-Za-z0-9]*)[&#039;&quot;]?\s*[:=]\s*function\b/;
+        // {name} = eval()
+        var reFunctionEvaluation = /[&#039;&quot;]?([$_A-Za-z][$_A-Za-z0-9]*)[&#039;&quot;]?\s*[:=]\s*(?:eval|new Function)\b/;
+        var lines = source.split(&#039;\n&#039;);
+
+        // Walk backwards in the source lines until we find the line which matches one of the patterns above
+        var code = &#039;&#039;;
+        var maxLines = Math.min(lineNumber, 20);
+        var m;
+        for (var i = 0; i &lt; maxLines; ++i) {
+            // lineNo is 1-based, source[] is 0-based
+            var line = lines[lineNumber - i - 1];
+            var commentPos = line.indexOf(&#039;//&#039;);
+            if (commentPos &gt;= 0) {
+                line = line.substr(0, commentPos);
+            }
+
+            if (line) {
+                code = line + code;
+                m = reFunctionExpression.exec(code);
+                if (m &amp;&amp; m[1]) {
+                    return m[1];
+                }
+                m = reFunctionDeclaration.exec(code);
+                if (m &amp;&amp; m[1]) {
+                    return m[1];
+                }
+                m = reFunctionEvaluation.exec(code);
+                if (m &amp;&amp; m[1]) {
+                    return m[1];
+                }
+            }
+        }
+        return undefined;
+    }
+
+    function _ensureSupportedEnvironment() {
+        if (typeof Object.defineProperty !== &#039;function&#039; || typeof Object.create !== &#039;function&#039;) {
+            throw new Error(&#039;Unable to consume source maps in older browsers&#039;);
+        }
+    }
+
+    function _ensureStackFrameIsLegit(stackframe) {
+        if (typeof stackframe !== &#039;object&#039;) {
+            throw new TypeError(&#039;Given StackFrame is not an object&#039;);
+        } else if (typeof stackframe.fileName !== &#039;string&#039;) {
+            throw new TypeError(&#039;Given file name is not a String&#039;);
+        } else if (typeof stackframe.lineNumber !== &#039;number&#039; ||
+            stackframe.lineNumber % 1 !== 0 ||
+            stackframe.lineNumber &lt; 1) {
+            throw new TypeError(&#039;Given line number must be a positive integer&#039;);
+        } else if (typeof stackframe.columnNumber !== &#039;number&#039; ||
+            stackframe.columnNumber % 1 !== 0 ||
+            stackframe.columnNumber &lt; 0) {
+            throw new TypeError(&#039;Given column number must be a non-negative integer&#039;);
+        }
+        return true;
+    }
+
+    function _findSourceMappingURL(source) {
+        var m = /\/\/[#@] ?sourceMappingURL=([^\s&#039;&quot;]+)\s*$/.exec(source);
+        if (m &amp;&amp; m[1]) {
+            return m[1];
+        } else {
+            throw new Error(&#039;sourceMappingURL not found&#039;);
+        }
+    }
+
+    function _extractLocationInfoFromSourceMap(stackframe, rawSourceMap, sourceCache) {
+        return new Promise(function(resolve, reject) {
+            var mapConsumer = new SourceMap.SourceMapConsumer(rawSourceMap);
+
+            var loc = mapConsumer.originalPositionFor({
+                line: stackframe.lineNumber,
+                column: stackframe.columnNumber
+            });
+
+            if (loc.source) {
+                var mappedSource = mapConsumer.sourceContentFor(loc.source);
+                if (mappedSource) {
+                    sourceCache[loc.source] = mappedSource;
+                }
+                resolve(
+                    new StackFrame(
+                        loc.name || stackframe.functionName,
+                        stackframe.args,
+                        loc.source,
+                        loc.line,
+                        loc.column));
+            } else {
+                reject(new Error(&#039;Could not get original source for given stackframe and source map&#039;));
+            }
+        });
+    }
+
+    /**
+     * @constructor
+     * @param {Object} opts
+     *      opts.sourceCache = {url: &quot;Source String&quot;} =&gt; preload source cache
+     *      opts.offline = True to prevent network requests.
+     *              Best effort without sources or source maps.
+     *      opts.ajax = Promise returning function to make X-Domain requests
+     */
+    return function StackTraceGPS(opts) {
+        if (!(this instanceof StackTraceGPS)) {
+            return new StackTraceGPS(opts);
+        }
+        opts = opts || {};
+
+        this.sourceCache = opts.sourceCache || {};
+
+        this.ajax = opts.ajax || _xdr;
+
+        this._atob = opts.atob || _atob;
+
+        this._get = function _get(location) {
+            return new Promise(function(resolve, reject) {
+                var isDataUrl = location.substr(0, 5) === &#039;data:&#039;;
+                if (this.sourceCache[location]) {
+                    resolve(this.sourceCache[location]);
+                } else if (opts.offline &amp;&amp; !isDataUrl) {
+                    reject(new Error(&#039;Cannot make network requests in offline mode&#039;));
+                } else {
+                    if (isDataUrl) {
+                        // data URLs can have parameters.
+                        // see http://tools.ietf.org/html/rfc2397
+                        var supportedEncodingRegexp =
+                            /^data:application\/json;([\w=:&quot;-]+;)*base64,/;
+                        var match = location.match(supportedEncodingRegexp);
+                        if (match) {
+                            var sourceMapStart = match[0].length;
+                            var encodedSource = location.substr(sourceMapStart);
+                            var source = this._atob(encodedSource);
+                            this.sourceCache[location] = source;
+                            resolve(source);
+                        } else {
+                            reject(new Error(&#039;The encoding of the inline sourcemap is not supported&#039;));
+                        }
+                    } else {
+                        var xhrPromise = this.ajax(location, {method: &#039;get&#039;});
+                        // Cache the Promise to prevent duplicate in-flight requests
+                        this.sourceCache[location] = xhrPromise;
+                        xhrPromise.then(resolve, reject);
+                    }
+                }
+            }.bind(this));
+        };
+
+        /**
+         * Given a StackFrame, enhance function name and use source maps for a
+         * better StackFrame.
+         *
+         * @param {StackFrame} stackframe object
+         * @returns {Promise} that resolves with with source-mapped StackFrame
+         */
+        this.pinpoint = function StackTraceGPS$$pinpoint(stackframe) {
+            return new Promise(function(resolve, reject) {
+                this.getMappedLocation(stackframe).then(function(mappedStackFrame) {
+                    function resolveMappedStackFrame() {
+                        resolve(mappedStackFrame);
+                    }
+
+                    this.findFunctionName(mappedStackFrame)
+                        .then(resolve, resolveMappedStackFrame)
+                        [&#039;catch&#039;](resolveMappedStackFrame);
+                }.bind(this), reject);
+            }.bind(this));
+        };
+
+        /**
+         * Given a StackFrame, guess function name from location information.
+         *
+         * @param {StackFrame} stackframe
+         * @returns {Promise} that resolves with enhanced StackFrame.
+         */
+        this.findFunctionName = function StackTraceGPS$$findFunctionName(stackframe) {
+            return new Promise(function(resolve, reject) {
+                _ensureStackFrameIsLegit(stackframe);
+                this._get(stackframe.fileName).then(function getSourceCallback(source) {
+                    var lineNumber = stackframe.lineNumber;
+                    var columnNumber = stackframe.columnNumber;
+                    var guessedFunctionName = _findFunctionName(source, lineNumber, columnNumber);
+                    // Only replace functionName if we found something
+                    if (guessedFunctionName) {
+                        resolve(new StackFrame(guessedFunctionName,
+                            stackframe.args,
+                            stackframe.fileName,
+                            lineNumber,
+                            columnNumber));
+                    } else {
+                        resolve(stackframe);
+                    }
+                }, reject)[&#039;catch&#039;](reject);
+            }.bind(this));
+        };
+
+        /**
+         * Given a StackFrame, seek source-mapped location and return new enhanced StackFrame.
+         *
+         * @param {StackFrame} stackframe
+         * @returns {Promise} that resolves with enhanced StackFrame.
+         */
+        this.getMappedLocation = function StackTraceGPS$$getMappedLocation(stackframe) {
+            return new Promise(function(resolve, reject) {
+                _ensureSupportedEnvironment();
+                _ensureStackFrameIsLegit(stackframe);
+
+                var sourceCache = this.sourceCache;
+                var fileName = stackframe.fileName;
+                this._get(fileName).then(function(source) {
+                    var sourceMappingURL = _findSourceMappingURL(source);
+                    var isDataUrl = sourceMappingURL.substr(0, 5) === &#039;data:&#039;;
+                    var base = fileName.substring(0, fileName.lastIndexOf(&#039;/&#039;) + 1);
+
+                    if (sourceMappingURL[0] !== &#039;/&#039; &amp;&amp; !isDataUrl &amp;&amp; !(/^https?:\/\/|^\/\//i).test(sourceMappingURL)) {
+                        sourceMappingURL = base + sourceMappingURL;
+                    }
+
+                    this._get(sourceMappingURL).then(function(sourceMap) {
+                        if (typeof sourceMap === &#039;string&#039;) {
+                            sourceMap = _parseJson(sourceMap.replace(/^\)\]\}&#039;/, &#039;&#039;));
+                        }
+                        if (typeof sourceMap.sourceRoot === &#039;undefined&#039;) {
+                            sourceMap.sourceRoot = base;
+                        }
+
+                        _extractLocationInfoFromSourceMap(stackframe, sourceMap, sourceCache)
+                            .then(resolve)[&#039;catch&#039;](function() {
+                            resolve(stackframe);
+                        });
+                    }, reject)[&#039;catch&#039;](reject);
+                }.bind(this), reject)[&#039;catch&#039;](reject);
+            }.bind(this));
+        };
+    };
+}));</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
