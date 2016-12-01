@@ -35,4 +35,3 @@ boot.ci(results, type=c("norm", "basic", "perc", "bca"))
 
 
 #cleanup
-rm(myData)
