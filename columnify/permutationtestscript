@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+OUTPUTFILE="permutation_test_results/test$1"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..100}
+do
+
+	RESULT="$(npm test random 20 | egrep -w '# tests|# pass')"
+
+	TESTS=$(echo "$RESULT" | egrep "tests")
+	TESTS=${TESTS##* }
+
+	PASS=$(echo "$RESULT" | egrep "pass")
+	PASS=${PASS##* }
+
+	echo "TEST "$VARIABLE": "$PASS"/"$TESTS" Passed"
+	echo $PASS"/"$TESTS >> $OUTPUTFILE
+
+done
+

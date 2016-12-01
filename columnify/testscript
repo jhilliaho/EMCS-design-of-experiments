@@ -1,0 +1,41 @@
+#!/bin/bash
+
+OUTPUTFILE="test_results/test$1"
+
+> $OUTPUTFILE;
+
+npm test 1-25 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+npm test low 1-25 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+
+npm test 5-16 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+npm test low 5-16 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+
+npm test 12-16 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+npm test low 12-16 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+
+npm test 13-15 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+npm test low 13-15 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+
+npm test 7 12 13 15 16 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+npm test low 7 12 13 15 16 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+
+npm test 7 13 15 16 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+npm test low 7 13 15 16 | egrep -w 'Lines|tests|pass|Running tests' >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE
+echo " " >> $OUTPUTFILE

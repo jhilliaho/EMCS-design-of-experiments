@@ -2,13 +2,38 @@ var runTests = [];
 
 var childTestTotals = [1,1,2,1,1,2,5,1,1,3,2,6,8,1,7,3,1,3,2,3,4,1,2,1,1];
 
-process.argv.forEach(function (val) {
+function createRandomArray (start, end, amount) {
+	if (amount > (end - start + 1)) {
+		amount = end - start + 1;
+		console.log("THE AMOUNT OF RANDOM VALUES WAS BIGGER THAN RANGE");
+		console.log("SELECTED ONLY ", amount, " VALUES");
+	}
+	arr = [];
+	for (var i = 0; i < amount; ++i) {
+		var val = -1;
+		while (val == -1 || arr.indexOf(val) !== -1) {
+			val = Math.round((end - start) * Math.random() + start);
+		}
+		arr[arr.length] = val;
+	}
+	return arr;
+}
+
+for (var index = 0; index < process.argv.length; ++index) {
+	val = process.argv[index]
 	if (val === "low") {
 		console.log("Testing with low amount of tests")
-		var childTestTotals = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+		childTestTotals = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 	}
 
-	if (val.indexOf('-') !== -1) {
+	if (val.indexOf('random') !== -1) {
+		randomAmount = parseInt(process.argv[index+1]);
+		if (Number.isInteger(randomAmount)) {
+			runTests = createRandomArray(1,25,randomAmount);
+			console.log("Run randomly selected tests", runTests)
+			break;
+		}
+	} else if (val.indexOf('-') !== -1) {
 		nums = val.split('-');
 		for (var i = parseInt(nums[0]); i <= parseInt(nums[1]); ++i) {
 			runTests[runTests.length] = i;
@@ -16,7 +41,10 @@ process.argv.forEach(function (val) {
 	} else if (Number.isInteger(parseInt(val))) {
 		runTests[runTests.length] = parseInt(val);
 	}
-});
+}
+
+
+console.log("Running tests: ", JSON.stringify(runTests));
 
 var test = require('tape');
 var fs = require('fs')
@@ -38,8 +66,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('1 column', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/1-column-simple-expected.txt', 'utf8')
@@ -71,8 +99,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('2 column', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/2-column-simple-expected.txt', 'utf8')
@@ -102,8 +130,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('columns can be aligned to the center', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/align-center-expected.txt', 'utf8')
@@ -112,8 +140,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('columns can be aligned to the centre using the correct spelling of centre', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/align-center-expected.txt', 'utf8')
@@ -156,8 +184,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('wrapping wide columns', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/wrap-expected.txt', 'utf8')
@@ -206,8 +234,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('wrapping wide columns', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/wrap-with-padding-expected.txt', 'utf8')
@@ -253,8 +281,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('truncation character is configurable', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/truncate-expected.txt', 'utf8').replace(/…/g, '>')
@@ -270,8 +298,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('truncation character can be multichar', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/truncate-multichar-expected.txt', 'utf8')
@@ -308,40 +336,40 @@ if (runTests.indexOf(testCount) !== -1) {
 
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('truncate string which is longer than max', function(t) {
 		t.plan(1)
 		t.equal(truncateString('This is a very long sentencies', 20), 'This is a very long ')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('truncate string which is shorter than max', function(t) {
 		t.plan(1)
 		t.equal(truncateString('short', 10), 'short')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('truncate string with multibytes characters', function(t) {
 		t.plan(1)
 		t.equal(truncateString('这是一句话 That is a word', 15), '这是一句话 That')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('return string when maxLineWidth is Infinity', function(t) {
 		t.plan(1)
 		t.equal(truncateString('这是一句话 That is a word', Infinity), '这是一句话 That is a word');
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('truncate funky data', function(t) {
 		t.plan(5)
 		t.equal(truncateString(null, 2), '')
@@ -382,8 +410,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('columns are limited when truncation enabled', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/truncate-expected.txt', 'utf8')
@@ -429,8 +457,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('columns are limited when truncation enabled', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/truncate-with-padding-expected.txt', 'utf8')
@@ -480,8 +508,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('specific columns can be truncated, while others not', function(t) {
 		var expected = fs.readFileSync(__dirname + '/truncate-string-maxlinewidth-expected.txt', 'utf8')
 
@@ -503,8 +531,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('when no maxLineWidth, nothing is changed', function(t) {
 		t.equal(columnify(data, {
 			config: {
@@ -524,8 +552,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('maxLineWidth: "auto" with column max widths', function(t) {
 		t.equal(columnify(data, {
 			maxLineWidth: 'auto',
@@ -579,8 +607,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('specific columns can be truncated, while others not', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/truncate-column-expected.txt', 'utf8')
@@ -601,8 +629,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('string proto does not get polluted by wcwidth', function(t) {
 		t.equal(String.prototype.wcwidth, undefined)
 		t.end()
@@ -628,8 +656,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	var splitLongWords =  require('../utils').splitLongWords
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('split long word with …', function(t) {
 		t.plan(1)
 // note is 5 letters to take … into account
@@ -638,40 +666,40 @@ t.equal(splitLongWords('dinosaur', 5, '…'), 'dino… saur')
 
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('split long words with …', function(t) {
 		t.plan(1)
 		t.equal(splitLongWords('dinosaur cabbages', 5, '…'), 'dino… saur cabb… ages')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('ignores short words', function(t) {
 		t.plan(1)
 		t.equal(splitLongWords('cow car mouse', 5, '…'), 'cow car mouse')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('can split long words multiple times', function(t) {
 		t.plan(1)
 		t.equal(splitLongWords('dodecahedrons', 3, '…'), 'do… de… ca… he… dr… ons')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('ignores/strips leading whitespace', function(t) {
 		t.plan(1)
 		t.equal(splitLongWords(' dodecahedrons', 3, '…'), 'do… de… ca… he… dr… ons')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('multibytes characters', function(t) {
 		t.plan(1)
 		t.equal(splitLongWords('cow 开汽车 mouse 안녕하세요', 3, '…'), 'cow 开… 汽… 车 mo… use 안… 녕… 하… 세… 요')
@@ -697,48 +725,48 @@ if (runTests.indexOf(testCount) !== -1) {
 	var splitIntoLines =  require('../utils').splitIntoLines
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('lines under max are ok', function(t) {
 		t.plan(1)
 		t.deepEqual(splitIntoLines('dinosaur cabbages', 32), ['dinosaur cabbages'])
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('lines at max are ok', function(t) {
 		t.plan(1)
 		t.deepEqual(splitIntoLines('dinosaur cabbages', 17), ['dinosaur cabbages'])
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('lines at max with multiple spaces are ok', function(t) {
 		t.plan(1)
 		t.deepEqual(splitIntoLines('dinosaur cabbages mechanic', 26), ['dinosaur cabbages mechanic'])
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('lines over max will be split', function(t) {
 		t.plan(1)
 		t.deepEqual(splitIntoLines('dinosaur cabbages', 16), ['dinosaur', 'cabbages'])
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('splits lines under max onto multiple lines', function(t) {
 		t.plan(1)
 		t.deepEqual(splitIntoLines('dinosaur cabbages', 7), ['dinosaur', 'cabbages'])
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('can put multiple words per line', function(t) {
 		t.plan(1)
 		t.deepEqual(splitIntoLines('dog cat cow bat mat', 7), [
@@ -749,8 +777,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('single existing newline is preserved', function(t) {
 		t.plan(1)
 		t.deepEqual(splitIntoLines('dog\n cat cow bat mat', 7), [
@@ -761,8 +789,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('multiple existing newlines are preserved', function(t) {
 		t.plan(1)
 		t.deepEqual(splitIntoLines('dog\n\n cat\n cow \nbat mat', 7), [
@@ -799,8 +827,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('show column', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/show-headers-expected.txt', 'utf8')
@@ -827,40 +855,40 @@ if (runTests.indexOf(testCount) !== -1) {
 	var padRight =  require('../utils').padRight
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('pad string with spaces up to len', function(t) {
 		t.plan(1)
 		t.equal(padRight('word', 10), 'word      ')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('pad empty string with spaces up to len', function(t) {
 		t.plan(1)
 		t.equal(padRight('', 10), '          ')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('leaves long strings along', function(t) {
 		t.plan(1)
 		t.equal(padRight('012345678910', 10), '012345678910')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('custom padding', function(t) {
 		t.plan(1)
 		t.equal(padRight('', 10, '.'), '..........')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('handling funky data with spaces up to len', function(t) {
 		t.plan(5)
 		t.equal(padRight(null, 10), '          ')
@@ -871,16 +899,16 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('pad string with paddingChr up to len', function(t) {
 		t.plan(1)
 		t.equal(padRight('word', 10, '.'), 'word......')
 	})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('pad string with paddingChr of length >1, up to len', function(t) {
 		t.plan(1)
 		t.equal(padRight('words', 10, ' .'), 'words . . ')
@@ -888,46 +916,38 @@ if (runTests.indexOf(testCount) !== -1) {
 })();
 }
 testCount++;
-if (runTests.indexOf(testCount) !== -1) {
-	console.log("Running test ",testCount);
-
-
-
-
-
-
-
-
 
 
 // 16
-(function(){
-	var padCenter =  require('../utils').padCenter
+if (runTests.indexOf(testCount) !== -1) {
+	console.log("Running test ",testCount);
+	(function(){
+		var padCenter =  require('../utils').padCenter
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
-	test('pad string with spaces up to len (sides equal)', function(t) {
-		t.plan(1)
-		t.equal(padCenter('word', 10), '   word   ')
-	})
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
+		test('pad string with spaces up to len (sides equal)', function(t) {
+			t.plan(1)
+			t.equal(padCenter('word', 10), '   word   ')
+		})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
-	test('pad string with spaces up to len (sides not equal)', function(t) {
-		t.plan(1)
-		t.equal(padCenter('words', 10), '  words   ')
-	})
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
+		test('pad string with spaces up to len (sides not equal)', function(t) {
+			t.plan(1)
+			t.equal(padCenter('words', 10), '  words   ')
+		})
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
-	test('pad string with paddingChr of length >1, up to len', function(t) {
-		t.plan(1)
-		t.equal(padCenter('word', 10, ' .'), ' . word . ')
-	})
-})();
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
+		test('pad string with paddingChr of length >1, up to len', function(t) {
+			t.plan(1)
+			t.equal(padCenter('word', 10, ' .'), ' . word . ')
+		})
+	})();
 }
 testCount++;
 if (runTests.indexOf(testCount) !== -1) {
@@ -947,8 +967,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	}]
 
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('hide id column', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/hide-individual-header-expected.txt', 'utf8')
@@ -974,8 +994,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		}]
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('column headings are uppercased by default', function(t) {
 			t.plan(3)
 			var result = columnify(data)
@@ -986,8 +1006,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('headings can be transformed by a function', function(t) {
 			t.plan(3)
 			var result = columnify(data, {
@@ -1002,8 +1022,8 @@ if (runTests.indexOf(testCount) !== -1) {
 	})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('headings can be transformed on a per-column basis', function(t) {
 			t.plan(3)
 			var result = columnify(data, {
@@ -1047,8 +1067,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		}]
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('leaving existing linebreaks', function(t) {
 			t.plan(1)
 			var expected = fs.readFileSync(__dirname + '/existing-linebreaks-expected.txt', 'utf8')
@@ -1057,8 +1077,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('removing existing linebreaks', function(t) {
 			t.plan(1)
 			var expected = fs.readFileSync(__dirname + '/remove-existing-linebreaks-expected.txt', 'utf8')
@@ -1085,8 +1105,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		}]
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('removes description column', function(t) {
 			t.plan(2)
 			var result = columnify(data, {
@@ -1102,8 +1122,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('include == columns', function(t) {
 			t.plan(2)
 			var result = columnify(data, {
@@ -1119,8 +1139,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('columns preferred over include if both supplied', function(t) {
 			t.plan(2)
 			var result = columnify(data, {
@@ -1160,8 +1180,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		}]
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('column data can be transformed', function(t) {
 			t.plan(1)
 			var expected = fs.readFileSync(__dirname + '/data-transform-expected.txt', 'utf8')
@@ -1173,8 +1193,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('dataTransform gets columns', function(t) {
 			var COLUMNS = Object.keys(data[0]).length
 			var ASSERTIONS = 6
@@ -1193,8 +1213,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('column headings can be transformed', function(t) {
 			t.plan(1)
 			var expected = fs
@@ -1210,8 +1230,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('column data can be transformed on a per-column basis', function(t) {
 			var result = columnify(data, {
 				config: {
@@ -1250,8 +1270,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		}]
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('column splitter character', function(t) {
 			t.plan(1)
 			var expected = fs.readFileSync(__dirname + '/column-splitter-character-expected.txt', 'utf8')
@@ -1289,8 +1309,8 @@ if (runTests.indexOf(testCount) !== -1) {
 			"through@2.3.4": 1
 		}
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('objects are automatically converted into k/v array', function(t) {
 			t.plan(1)
 			var expected = fs.readFileSync(__dirname + '/auto-columns-expected.txt', 'utf8')
@@ -1298,8 +1318,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		})
 
 
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('column names can be provided', function(t) {
 			t.plan(1)
 			var expected = fs.readFileSync(__dirname + '/auto-columns-expected.txt', 'utf8')
@@ -1329,8 +1349,8 @@ if (runTests.indexOf(testCount) !== -1) {
 		"debug@0.8.1": chalk.red('6')
 	}
 
-	childTestCounts[testCount]++
-	if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+	childTestCounts[testCount-1]++
+	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 	test('width calculated correctly even if ansi colors used.', function(t) {
 		t.plan(1)
 		var expected = fs.readFileSync(__dirname + '/ansi-expected.txt', 'utf8')
@@ -1365,8 +1385,8 @@ if (runTests.indexOf(testCount) !== -1) {
 			"resumer@0.0.0": 1,
 			"through@2.3.4": 1
 		}
-		childTestCounts[testCount]++
-		if (childTestCounts[testCount] > childTestTotals[testCount]) return;
+		childTestCounts[testCount-1]++
+		if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
 		test('columns can be aligned right', function(t) {
 			t.plan(1)
 			var expected = fs.readFileSync(__dirname + '/align-right-expected.txt', 'utf8')

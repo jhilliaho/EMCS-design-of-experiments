@@ -1,3 +1,5 @@
+
+
 //describe = require('describe')
 // jscs:disable maximumLineLength
     beforeEach(function() {
@@ -10,8 +12,6 @@
     afterEach(function() {
         jasmine.Ajax.uninstall();
     });
-
-
 
     describe('with inline sourcemaps', function() {
         beforeEach(function() {
