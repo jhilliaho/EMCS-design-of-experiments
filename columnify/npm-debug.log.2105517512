@@ -1,0 +1,28 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/6.5.0/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'test',
+1 verbose cli   '5-16' ]
+2 info using npm@3.10.3
+3 info using node@v6.5.0
+4 verbose run-script [ 'pretest', 'test', 'posttest' ]
+5 info lifecycle columnify@1.5.4~pretest: columnify@1.5.4
+6 verbose lifecycle columnify@1.5.4~pretest: unsafe-perm in lifecycle true
+7 verbose lifecycle columnify@1.5.4~pretest: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/jani/OneDrive/Asiakirjat/VAIHTO/Experimental methods in computer science/EMCS-design-of-experiments/columnify/node_modules/.bin:/usr/local/Cellar/node/6.5.0/bin:/Library/Frameworks/Python.framework/Versions/3.4/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/CrossPack-AVR/bin
+8 verbose lifecycle columnify@1.5.4~pretest: CWD: /Users/jani/OneDrive/Asiakirjat/VAIHTO/Experimental methods in computer science/EMCS-design-of-experiments/columnify
+9 silly lifecycle columnify@1.5.4~pretest: Args: [ '-c', 'npm prune' ]
+10 verbose stack Error: write EPIPE
+10 verbose stack     at exports._errnoException (util.js:1026:11)
+10 verbose stack     at WriteWrap.afterWrite (net.js:795:14)
+11 verbose cwd /Users/jani/OneDrive/Asiakirjat/VAIHTO/Experimental methods in computer science/EMCS-design-of-experiments/columnify
+12 error Darwin 16.1.0
+13 error argv "/usr/local/Cellar/node/6.5.0/bin/node" "/usr/local/bin/npm" "test" "5-16"
+14 error node v6.5.0
+15 error npm  v3.10.3
+16 error code EPIPE
+17 error errno EPIPE
+18 error syscall write
+19 error write EPIPE
+20 error If you need help, you may report this error at:
+20 error     <https://github.com/npm/npm/issues>
+21 verbose exit [ 1, true ]

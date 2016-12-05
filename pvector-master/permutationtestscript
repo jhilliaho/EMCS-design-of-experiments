@@ -8,7 +8,7 @@ OUTPUTFILE="permutation_test_results/test$1"
 for VARIABLE in {1..100}
 do
 
-	RESULT="$(npm test random 5 | egrep -w '# tests|# pass')"
+	RESULT="$(istanbul cover _mocha test/index.test.js -- random 5 | egrep -w '# tests|# pass')"
 
 	TESTS=$(echo "$RESULT" | egrep "tests")
 	TESTS=${TESTS##* }

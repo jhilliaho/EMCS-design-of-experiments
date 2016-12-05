@@ -1,0 +1,46 @@
+{
+  "name": "pvector",
+  "version": "1.1.0",
+  "description": "vector for physics",
+  "main": "lib/pvector.js",
+  "scripts": {
+    "test": "istanbul cover _mocha test/index.test.js -- "
+  },
+  "keywords": [
+    "physics",
+    "vector"
+  ],
+  "author": {
+    "name": "dead-horse",
+    "email": "dead_horse@qq.com",
+    "url": "http://deadhorse.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dead-horse/pvector"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "describe": "^1.2.0"
+  },
+  "devDependencies": {
+    "istanbul": "~0.3.0",
+    "mocha": "~1.21.4",
+    "should": "~4.0.4",
+    "uglify-js": "~2.4.15"
+  },
+  "testling": {
+    "harness": "mocha",
+    "files": "test/*.js",
+    "browsers": [
+      "ie/8..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/latest",
+      "opera/11.0..latest",
+      "iphone/6",
+      "ipad/6",
+      "android-browser/latest"
+    ]
+  }
+}
