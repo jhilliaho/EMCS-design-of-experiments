@@ -8,21 +8,23 @@ OUTPUTFILE="permutation_test_results/test$1"
 for VARIABLE in {1..100}
 do
 
-	RESULT="$(istanbul cover _mocha test/index.test.js -- random 5 | egrep -w '# tests|# pass')"
+	RESULT="$(istanbul cover _mocha test/index.test.js -- random 12 | egrep -w 'failing|passing')"
 
-	TESTS=$(echo "$RESULT" | egrep "tests")
-	TESTS=${TESTS##* }
+	FAILS=$(echo "$RESULT" | egrep "failing")
+	FAILS=${FAILS##* }
 
-	PASS=$(echo "$RESULT" | egrep "pass")
+	PASS=$(echo "$RESULT" | egrep "passing")
 	PASS=${PASS##* }
 
-	echo "TEST "$VARIABLE": "$PASS"/"$TESTS" Passed"
+	echo "TEST "$VARIABLE": "$PASS"/"$FAILS" Passed"
 
-	if [ "$PASS" != "$TESTS" ]
+	if [ -z "$FAILS" ]
 	then
-	    echo 1 >> $OUTPUTFILE
-	else
 	    echo 0 >> $OUTPUTFILE
+	    echo "0";
+	else
+	    echo 1 >> $OUTPUTFILE
+	    echo "1";
 	fi
 
 done

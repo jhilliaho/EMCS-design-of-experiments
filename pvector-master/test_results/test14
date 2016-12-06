@@ -1,0 +1,24 @@
+Running tests:  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+  28 passing (14ms)
+Lines        : 95.1% ( 97/102 )
+ 
+Running tests:  [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+  25 passing (11ms)
+Lines        : 90.2% ( 92/102 )
+ 
+Running tests:  [1,2,3,4,5,6,7,8,9,10,11]
+  20 passing (11ms)
+Lines        : 74.51% ( 76/102 )
+ 
+Running tests:  [5,6,7,8,9,10,11]
+  14 passing (8ms)
+Lines        : 59.8% ( 61/102 )
+ 
+Running tests:  [4,5,6]
+  7 passing (7ms)
+Lines        : 45.1% ( 46/102 )
+ 
+Running tests:  [1]
+  1 passing (5ms)
+Lines        : 29.41% ( 30/102 )
+ 
