@@ -4,9 +4,9 @@ testSize = 16 #20 if not pruned
 full <- sapply(1:ncol(testCalendarCoverageDetailed),function(x) sum(testCalendarCoverageDetailed[,x]))
 minimal <- sapply(1:ncol(testCalendarCoverageMinimalDetailed),function(x) sum(testCalendarCoverageMinimalDetailed[,x]))
 
-#remove last 2 test suites as they not detect bugs at all
-full <- full[1:4]
-minimal <- minimal[1:4]
+#remove last test suite as they not detect bugs at all
+full <- full[1:5]
+minimal <- minimal[1:5]
 
 #test for normality
 shapiro.test(full)
