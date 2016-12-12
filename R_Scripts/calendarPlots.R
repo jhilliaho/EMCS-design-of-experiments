@@ -34,10 +34,18 @@ xl <- seq(min(testCases),max(testCases), (max(testCases) - min(testCases))/10)
 lines(xl,predict(lo,xl),col='red',lwd=2)
 
 #plot bugs found of full and full minimal test suite
-plot(1:length(testCalendarFull),testCalendarFull,col="green",xlab="Number of injected bug",ylab="Found?", type="l",main = "Bugs found given the full or minimal/ full test suite")
-par(new=TRUE)
-plot(1:length(testCalendarFullMinimal),testCalendarFullMinimal,col="red",xlab="",ylab="", type="l")
+testSize = 16 #20 if not pruned
 
+full <- sapply(1:ncol(testCalendarCoverageDetailed),function(x) sum(testCalendarCoverageDetailed[,x]))
+minimal <- sapply(1:ncol(testCalendarCoverageMinimalDetailed),function(x) sum(testCalendarCoverageMinimalDetailed[,x]))
+cov <- c(testCalendarCoverages,0)
+full <- c(full,0)
+minimal <- c(minimal,0)
+
+plot(cov, full/testSize, type = "l", col = "chartreuse2", lwd=3, xlab = "Test coverage", ylab = "Bugs probability",ylim=c(0,1), xlim=c(0,100))
+par(new=TRUE)
+plot(cov, minimal/testSize, type = "l", col = "brown3", lwd=3, xlab = "Test coverage", ylab = "Bugs probability",ylim=c(0,1), xlim=c(0,100))
+legend(0,95, legend=c("Full", "Minimal"),col=c("chartreuse2", "brown3"), lty=1:2, cex=0.8)
 
 
 if(pruning){
