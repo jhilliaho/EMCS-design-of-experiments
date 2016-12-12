@@ -1,5 +1,5 @@
 var runTests = [];
-var bugNumber = 1;
+var bugNumber = 0;
 var childTestTotals = [1,1,2,1,1,2,5,1,1,3,2,6,8,1,7,3,1,3,2,3,4,1,2,1,1];
 
 function createRandomArray (start, end, amount) {

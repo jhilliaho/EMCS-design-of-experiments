@@ -1,0 +1,7 @@
+for VARIABLE in {1..20}
+do
+	echo ""
+	echo "RUNNING TESTS FOR BUG $VARIABLE"
+	echo ""
+	./permutationtestscript_20 $VARIABLE
+done
