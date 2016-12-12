@@ -90,7 +90,7 @@ module.exports = function (items) {
       result[columnName] = item[columnName] != null ? item[columnName] : '';
       // toString everything
       result[columnName] = '' + result[columnName];
-      if (0 && columns[columnName].preserveNewLines) {
+      if (columns[columnName].preserveNewLines) {
         // merge non-newline whitespace chars
         result[columnName] = result[columnName].replace(/[^\S\n]/gmi, ' ');
       } else {

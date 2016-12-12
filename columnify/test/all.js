@@ -1,5 +1,5 @@
 var runTests = [];
-
+var bugNumber = 1;
 var childTestTotals = [1,1,2,1,1,2,5,1,1,3,2,6,8,1,7,3,1,3,2,3,4,1,2,1,1];
 
 function createRandomArray (start, end, amount) {
@@ -21,6 +21,12 @@ function createRandomArray (start, end, amount) {
 
 for (var index = 0; index < process.argv.length; ++index) {
 	val = process.argv[index]
+
+	if (val.indexOf('B') != -1) {
+		if (val.length == 2) bugNumber = val.charAt(1);
+		if (val.length == 3) bugNumber = val.charAt(1) + val.charAt(2);
+	}
+
 	if (val === "low") {
 		console.log("Testing with low amount of tests")
 		childTestTotals = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
@@ -48,7 +54,9 @@ console.log("Running tests: ", JSON.stringify(runTests));
 
 var test = require('tape');
 var fs = require('fs')
-var columnify =  require('../')
+libstr = '../bug' + bugNumber + '.js';
+console.log("FINDING SOURCE FILE FROM ", libstr);
+var columnify =  require(libstr)
 
 var testCount = 0;
 var childTestCounts = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
