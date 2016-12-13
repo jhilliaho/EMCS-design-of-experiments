@@ -1,4 +1,4 @@
-attributes <- 16
+attributes <- 20
 
 myData <- sapply(1:ncol(testColumnifyFullDetailed[1:attributes,]),function(x) sum(testColumnifyFullDetailed[,x])/attributes)
 myData
@@ -30,6 +30,7 @@ results
 plot(results)
 
 boot.ci(results, type=c("norm", "basic", "perc", "bca"))
+print(boot.ci(results, type=c("norm", "basic", "perc", "bca")))
 
 
 

@@ -1,5 +1,5 @@
 require(exactRankTests)
-testSize = 16 #20 if not pruned
+testSize = 17 #20 if not pruned
 
 full <- sapply(1:ncol(testCalendarCoverageDetailed),function(x) sum(testCalendarCoverageDetailed[,x]))
 minimal <- sapply(1:ncol(testCalendarCoverageMinimalDetailed),function(x) sum(testCalendarCoverageMinimalDetailed[,x]))

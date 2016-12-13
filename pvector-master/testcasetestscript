@@ -1,0 +1,213 @@
+#!/bin/bash
+
+
+OUTPUTFILE="testcase_test_results/test_case_1"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..20}
+do
+
+	RESULT="$(istanbul cover _mocha test/index.test.js --  B$VARIABLE 1)"
+	PASSING=$(echo "$RESULT" | egrep "passing")
+	FAILING=$(echo "$RESULT" | egrep "failing")
+	echo ""
+	echo ""
+	echo $PASSING;
+	echo $FAILING;
+
+	if [[ !  -z  $FAILING  ]]
+	then
+	    echo 1 >> $OUTPUTFILE
+	    echo ""
+	    echo "FAILED"
+	    echo ""
+	else
+	    echo 0 >> $OUTPUTFILE
+	    echo ""
+	    echo "PASSED"
+	    echo ""
+	fi
+done
+
+
+
+OUTPUTFILE="testcase_test_results/test_case_2"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..20}
+do
+
+	RESULT="$(istanbul cover _mocha test/index.test.js --  B$VARIABLE 1 9)"
+	PASSING=$(echo "$RESULT" | egrep "passing")
+	FAILING=$(echo "$RESULT" | egrep "failing")
+	echo ""
+	echo ""
+	echo $PASSING;
+	echo $FAILING;
+
+	if [[ !  -z  $FAILING  ]]
+	then
+	    echo 1 >> $OUTPUTFILE
+	    echo ""
+	    echo "FAILED"
+	    echo ""
+	else
+	    echo 0 >> $OUTPUTFILE
+	    echo ""
+	    echo "PASSED"
+	    echo ""
+	fi
+done
+
+
+OUTPUTFILE="testcase_test_results/test_case_3"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..20}
+do
+
+	RESULT="$(istanbul cover _mocha test/index.test.js --  B$VARIABLE 1 9 10)"
+	PASSING=$(echo "$RESULT" | egrep "passing")
+	FAILING=$(echo "$RESULT" | egrep "failing")
+	echo ""
+	echo ""
+	echo $PASSING;
+	echo $FAILING;
+
+	if [[ !  -z  $FAILING  ]]
+	then
+	    echo 1 >> $OUTPUTFILE
+	    echo ""
+	    echo "FAILED"
+	    echo ""
+	else
+	    echo 0 >> $OUTPUTFILE
+	    echo ""
+	    echo "PASSED"
+	    echo ""
+	fi
+done
+
+
+OUTPUTFILE="testcase_test_results/test_case_4"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..20}
+do
+
+	RESULT="$(istanbul cover _mocha test/index.test.js --  B$VARIABLE 1 9 10 3)"
+	PASSING=$(echo "$RESULT" | egrep "passing")
+	FAILING=$(echo "$RESULT" | egrep "failing")
+	echo ""
+	echo ""
+	echo $PASSING;
+	echo $FAILING;
+
+	if [[ !  -z  $FAILING  ]]
+	then
+	    echo 1 >> $OUTPUTFILE
+	    echo ""
+	    echo "FAILED"
+	    echo ""
+	else
+	    echo 0 >> $OUTPUTFILE
+	    echo ""
+	    echo "PASSED"
+	    echo ""
+	fi
+done
+
+
+OUTPUTFILE="testcase_test_results/test_case_5"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..20}
+do
+
+	RESULT="$(istanbul cover _mocha test/index.test.js --  B$VARIABLE 1 9 10 3 8 4)"
+	PASSING=$(echo "$RESULT" | egrep "passing")
+	FAILING=$(echo "$RESULT" | egrep "failing")
+	echo ""
+	echo ""
+	echo $PASSING;
+	echo $FAILING;
+
+	if [[ !  -z  $FAILING  ]]
+	then
+	    echo 1 >> $OUTPUTFILE
+	    echo ""
+	    echo "FAILED"
+	    echo ""
+	else
+	    echo 0 >> $OUTPUTFILE
+	    echo ""
+	    echo "PASSED"
+	    echo ""
+	fi
+done
+
+
+OUTPUTFILE="testcase_test_results/test_case_6"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..20}
+do
+
+	RESULT="$(istanbul cover _mocha test/index.test.js --  B$VARIABLE 1 9 10 3 8 4 5 15 16 2)"
+	PASSING=$(echo "$RESULT" | egrep "passing")
+	FAILING=$(echo "$RESULT" | egrep "failing")
+	echo ""
+	echo ""
+	echo $PASSING;
+	echo $FAILING;
+
+	if [[ !  -z  $FAILING  ]]
+	then
+	    echo 1 >> $OUTPUTFILE
+	    echo ""
+	    echo "FAILED"
+	    echo ""
+	else
+	    echo 0 >> $OUTPUTFILE
+	    echo ""
+	    echo "PASSED"
+	    echo ""
+	fi
+done
+
+
+
+OUTPUTFILE="testcase_test_results/test_case_7"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..20}
+do
+
+	RESULT="$(istanbul cover _mocha test/index.test.js --  B$VARIABLE 1-16)"
+	PASSING=$(echo "$RESULT" | egrep "passing")
+	FAILING=$(echo "$RESULT" | egrep "failing")
+	echo ""
+	echo ""
+	echo $PASSING;
+	echo $FAILING;
+
+	if [[ !  -z  $FAILING  ]]
+	then
+	    echo 1 >> $OUTPUTFILE
+	    echo ""
+	    echo "FAILED"
+	    echo ""
+	else
+	    echo 0 >> $OUTPUTFILE
+	    echo ""
+	    echo "PASSED"
+	    echo ""
+	fi
+done

@@ -1,4 +1,4 @@
-attributes <- 16
+attributes <- 17
 
 myData <- sapply(1:ncol(testPvectorFullDetailed[1:attributes,]),function(x) sum(testPvectorFullDetailed[,x])/attributes)
 myData
@@ -29,7 +29,7 @@ results <- boot(data = myData, statistic=Bmean, R=1000)
 results
 plot(results)
 
-boot.ci(results, type=c("norm", "basic", "perc", "bca"))
+print(boot.ci(results, type=c("norm", "basic", "perc", "bca")))
 
 
 

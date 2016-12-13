@@ -1,8 +1,8 @@
 require(exactRankTests)
 testSize = 16 #20 if not pruned
 
-full <- sapply(1:ncol(testCalendarCoverageDetailed),function(x) sum(testCalendarCoverageDetailed[,x]))
-minimal <- sapply(1:ncol(testCalendarCoverageMinimalDetailed),function(x) sum(testCalendarCoverageMinimalDetailed[,x]))
+full <- sapply(1:ncol(testColumnifyCoverageDetailed),function(x) sum(testColumnifyCoverageDetailed[,x]))
+minimal <- sapply(1:ncol(testColumnifyCoverageMinimalDetailed),function(x) sum(testColumnifyCoverageMinimalDetailed[,x]))
 
 #remove last 2 test suites as they not detect bugs at all
 full <- full[1:4]

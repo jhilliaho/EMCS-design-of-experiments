@@ -112,7 +112,7 @@ PVector.dist = function (loc1, loc2) {
 
 PVector.prototype.normalize = function () {
   var mag = this.mag();
-  if (mag = 0) {
+  if (mag === 0) {
     this.x = 0;
     this.y = 0;
   } else {
@@ -145,7 +145,7 @@ PVector.prototype.clone = function () {
 
 PVector.prototype.heading = function () {
   if (this.x === 0) {
-    if (this.y > 0) {return Math.PI/2;} else {return Math.PI / -2} //thingToReturn = this.y > 0 ? Math.PI / 2 : Math.PI / -2;
+    return this.y > 0 ? Math.PI / 2 : Math.PI / -2;
   }
   var theta = Math.atan(this.y / this.x);
   if (this.x > 0) {

@@ -1,5 +1,5 @@
 #use Pruning
-pruning = TRUE
+pruning = FALSE
 if(pruning){
   testColumnifyCoverageDetailed <- testColumnifyCoverageDetailed[1:16,]
   #testColumnifyCasesDetailed <- testColumnifyCasesDetailed[1:16,]
@@ -41,7 +41,7 @@ plot(1:length(testColumnifyFullMinimal),testColumnifyFullMinimal,col="red",xlab=
 
 
 if(pruning){
-  source("init.R")
+  source("columnifyInit.R")
 }
 
 

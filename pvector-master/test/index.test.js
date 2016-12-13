@@ -1,5 +1,5 @@
 var runTests = [];
-
+var bugNumber = 0;
 var childTestTotals = [1,2,1,2,2,3,3,2,1,1,2,2,2,1,1,2];
 
 function createRandomArray (start, end, amount) {
@@ -21,6 +21,11 @@ function createRandomArray (start, end, amount) {
 
 for (var index = 0; index < process.argv.length; ++index) {
 	val = process.argv[index]
+	if (val.indexOf('B') != -1) {
+		if (val.length == 2) bugNumber = val.charAt(1);
+		if (val.length == 3) bugNumber = val.charAt(1) + val.charAt(2);
+	}
+
 	if (val === "low") {
 		console.log("Testing with low amount of tests")
 		var childTestTotals = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
@@ -49,20 +54,13 @@ console.log("Running tests: ", JSON.stringify(runTests));
 var testCount = 0;
 var childTestCounts = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
-
-
-/*
-	childTestCounts[testCount-1]++
-	if (childTestCounts[testCount-1] > childTestTotals[testCount-1]) return;
-	it(
-*/
 	var should = require('should');
-	var PVector = require('..');
+
+	libstr = '../bugs/bug' + bugNumber + '.js';
+	console.log("FINDING SOURCE FILE FROM ", libstr);
+	var PVector =  require(libstr)
 
 	console.log("Starting")
-
-
-
 
 	testCount++;
 	if (runTests.indexOf(testCount) !== -1) {

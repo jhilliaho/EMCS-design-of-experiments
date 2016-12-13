@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+OUTPUTFILE="testcase_test_results/test_case_$1"
+
+> $OUTPUTFILE;
+
+for VARIABLE in {1..20}
+do
+
+	RESULT="$(npm test B$VARIABLE 1-25)"
+	TESTS=$(echo "$RESULT" | egrep "tests")
+	TESTS=${TESTS##* }
+
+	PASS=$(echo "$RESULT" | egrep "pass")
+	PASS=${PASS##* }
+
+	LINES=$(echo "$RESULT" | egrep "Lines")
+
+	echo "BUG "$VARIABLE": "$PASS"/"$TESTS" Passed"
+	echo $LINES
+
+	if [ "$PASS" != "$TESTS" ]
+	then
+	    echo 1 >> $OUTPUTFILE
+	    echo ""
+	    echo "FAILED"
+	    echo ""
+	else
+	    echo 0 >> $OUTPUTFILE
+	    echo ""
+	    echo "PASSED"
+	    echo ""
+	fi
+done
+
