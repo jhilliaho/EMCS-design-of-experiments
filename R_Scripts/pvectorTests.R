@@ -1,7 +1,7 @@
 #use Pruning
 pruning = FALSE
 if(pruning){
-  testPvectorFull <- testPvectorFull[1:16]
+  testPvectorFull <- testPvectorFull[1:17]
 }
 
 fullDetected <- length(which(testPvectorFull>0))
