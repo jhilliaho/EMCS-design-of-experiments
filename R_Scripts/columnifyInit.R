@@ -127,9 +127,9 @@ permutations[98,] = c(1,1,1,1,1,1,1,0,1,1,0,1,0,0,1,1,0,0,0,0)[1:nOfBugs]
 permutations[99,] = c(1,1,1,1,1,1,1,0,1,1,0,1,0,0,0,0,0,0,0,0)[1:nOfBugs]
 permutations[100,] = c(1,1,1,1,1,1,1,0,1,1,0,1,0,0,1,1,0,0,0,0)[1:nOfBugs]
 
-testColumnifyCoverages <- c(95.1, 90.2, 74.51, 59.8, 45.1, 29.41)
-testColumnifyCases <- c(25,15,10,5,3,2,1,0)
-testColumnifyCasesCoverages <- c(99.54, 95.89, 90.41, 87.67, 40.64, 23.74, 19.18, 15.98)
+testColumnifyCoverages <- c(95.1, 90.2, 74.51, 59.8, 45.1, 29.41) # 6
+testColumnifyCases <- c(25,15,10,5,3,2,1,0) # 8
+testColumnifyCasesCoverages <- c(99.54, 95.89, 90.41, 87.67, 40.64, 23.74, 19.18, 15.98) # 8 
 
 testColumnifyCoverageDetailed <- data.frame(testColumnifyFull,testColumnify90P,testColumnify80P,testColumnify70P,testColumnify40P,testColumnify30P)
 testColumnifyCoverageMinimalDetailed <- data.frame(testColumnifyFullMinimal,testColumnify90PMinimal,testColumnify80PMinimal,testColumnify70PMinimal,testColumnify40PMinimal,testColumnify30PMinimal)

@@ -49,7 +49,7 @@ legend(0,95, legend=c("Full", "Minimal"),col=c("chartreuse2", "brown3"), lty=1:2
 
 
 if(pruning){
-  source("init.R")
+  source("columnifyInit.R")
 }
 
 

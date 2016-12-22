@@ -120,9 +120,9 @@ permutations[98,] = c(1,1,1,1,0,1,1,0,0,1,1,0,0,0,0,1,1,0,0,0)[1:nOfBugs]
 permutations[99,] = c(1,0,0,1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0)[1:nOfBugs]
 permutations[100,] = c(1,1,0,1,1,1,1,1,0,0,0,0,0,0,1,1,1,0,0,0)[1:nOfBugs]
 
-testPvectorCoverages <- c(99.54,90.87,80.37,70.78,40.64,29.22)
-testPvectorCases <- c(35,30,20,10,5,3,2,1,0)
-testPvectorCasesCoverages <- c(95.10, 61.67, 40.2, 34.31, 32.35, 31.37, 29.41)
+testPvectorCoverages <- c(99.54,90.87,80.37,70.78,40.64,29.22) # 6
+testPvectorCases <- c(16,10,6,4,3,2,1,0) # 8
+testPvectorCasesCoverages <- c(95.10, 61.67, 40.2, 34.31, 32.35, 31.37, 29.41,0) # 8
 
 testPvectorCoverageDetailed <- data.frame(testPvectorFull,testPvector90P,testPvector80P,testPvector70P,testPvector40P,testPvector30P)
 #testPvectorCoverageMinimalDetailed <- data.frame(testPvectorFullMinimal,testPvector90PMinimal,testPvector80PMinimal,testPvector70PMinimal,testPvector40PMinimal,testPvector30PMinimal)

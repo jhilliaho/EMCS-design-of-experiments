@@ -1,10 +1,10 @@
 #use Pruning
-pruning = TRUE
+pruning = FALSE
 if(pruning){
   testPvectorCoverageDetailed <- testPvectorCoverageDetailed[1:17,]
   testPvectorCasesDetailed <- testPvectorCasesDetailed[1:17,]
   testPvectorFull <- testPvectorFull[1:17]
-  #testPvectorFullMinimal <- testPvectorFullMinimal[1:17]
+#  testPvectorFullMinimal <- testPvectorFullMinimal[1:17]
 }
 
 #plot bug probability of Pvector given different test coverage levels
@@ -34,7 +34,7 @@ xl <- seq(min(testCases),max(testCases), (max(testCases) - min(testCases))/10)
 lines(xl,predict(lo,xl),col='red',lwd=2)
 
 #plot bugs found of full and full minimal test suite
-testSize = 16 #20 if not pruned
+testSize = 17 #20 if not pruned
 
 full <- sapply(1:ncol(testPvectorCoverageDetailed),function(x) sum(testPvectorCoverageDetailed[,x]))
 #minimal <- sapply(1:ncol(testPvectorCoverageMinimalDetailed),function(x) sum(testPvectorCoverageMinimalDetailed[,x]))
@@ -43,13 +43,13 @@ full <- c(full,0)
 #minimal <- c(minimal,0)
 
 plot(cov, full/testSize, type = "l", col = "chartreuse2", lwd=3, xlab = "Test coverage", ylab = "Bugs probability",ylim=c(0,1), xlim=c(0,100))
-#par(new=TRUE)
+par(new=TRUE)
 #plot(cov, minimal/testSize, type = "l", col = "brown3", lwd=3, xlab = "Test coverage", ylab = "Bugs probability",ylim=c(0,1), xlim=c(0,100))
 #legend(0,95, legend=c("Full", "Minimal"),col=c("chartreuse2", "brown3"), lty=1:2, cex=0.8)
 
 
 if(pruning){
-  source("init.R")
+  source("pvectorInit.R")
 }
 
 
